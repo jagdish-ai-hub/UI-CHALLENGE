@@ -12,6 +12,7 @@ const anchors = [
   { id: 'meets', label: 'Meets' },
   { id: 'gallery', label: 'Gallery' },
   { id: 'milestones', label: 'Milestones' },
+  { id: 'community', label: 'Community' },
 ]
 
 export default function Navbar() {

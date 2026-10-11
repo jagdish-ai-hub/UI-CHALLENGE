@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useState, lazy } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import Clubhouse from '@/three/Clubhouse'
-import SceneFrame from '@/three/SceneFrame'
+import { SceneFrame } from '@/three/lazy'
 import { Button, CountUp, Eyebrow, Reveal } from '@/components/ui/primitives'
 import { google, teamOrder, teams, type TeamId } from '@/config/brand'
 import { scrollToId } from '@/lib/lenis'
 import { useStore } from '@/store/useStore'
 import { cn } from '@/lib/utils'
+
+const Clubhouse = lazy(() => import('@/three/Clubhouse'))
 
 export default function Hero() {
   const [active, setActive] = useState<TeamId | null>(null)

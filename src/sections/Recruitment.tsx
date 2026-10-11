@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useState, lazy } from 'react'
 import { Check, ArrowRight } from 'lucide-react'
-import BadgeScene from '@/three/BadgeScene'
-import SceneFrame from '@/three/SceneFrame'
+import { SceneFrame } from '@/three/lazy'
 import { Button, Reveal, SectionHeading } from '@/components/ui/primitives'
 import { google, teamOrder, teams, type TeamId } from '@/config/brand'
 import { branches, type Branch } from '@/data/seed'
 import { useStore } from '@/store/useStore'
 import { cn } from '@/lib/utils'
+
+const BadgeScene = lazy(() => import('@/three/BadgeScene'))
 
 const steps = [
   { n: '01', t: 'Apply', d: 'Tell us who you are and which team fits.', c: google.blue },
@@ -44,9 +45,10 @@ export default function Recruitment() {
 
         <div className="mt-14 grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <Reveal>
-            <SceneFrame label="3D member badge that updates with the name and team you choose" className="h-[460px] rounded-[2rem] bg-g-red-50 sm:h-[580px]">
+            <SceneFrame label="3D member badge on a lanyard that updates with the name and team you choose" className="h-[480px] rounded-[2rem] transition-colors duration-500 sm:h-[620px]" style={{ background: teams[team].tint }}>
               {() => <BadgeScene name={name} team={team} branch={branch} />}
             </SceneFrame>
+            <p className="mt-3 text-center text-xs text-muted">Move your cursor to swing the badge. Click it to flip.</p>
           </Reveal>
 
           <Reveal delay={0.08}>

@@ -46,6 +46,7 @@ export interface Applicant {
   why: string
   status: ApplicantStatus
   createdAt: string
+  rostered?: boolean
 }
 
 export const kindColor: Record<EventKind, string> = {

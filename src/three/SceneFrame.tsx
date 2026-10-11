@@ -7,6 +7,7 @@ import { TierContext } from './tierContext'
 
 interface Props {
   className?: string
+  style?: React.CSSProperties
   label: string
   children: (tier: Exclude<Tier, 'off'>) => ReactNode
   /** Rendered instead of the 3D scene on `off` tier. */
@@ -29,10 +30,10 @@ export function DefaultFallback() {
   )
 }
 
-export default function SceneFrame({ className, label, children, fallback }: Props) {
+export default function SceneFrame({ className, style, label, children, fallback }: Props) {
   const tier = useTier()
   return (
-    <div className={cn('relative isolate overflow-hidden', className)} role="img" aria-label={label}>
+    <div className={cn('relative isolate overflow-hidden', className)} style={style} role="img" aria-label={label}>
       {tier === 'off' ? (
         (fallback ?? <DefaultFallback />)
       ) : (

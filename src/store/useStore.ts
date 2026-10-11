@@ -18,6 +18,7 @@ interface State {
   events: ClubEvent[]
   applicants: Applicant[]
   rsvps: string[]
+  checkins: Record<string, string[]>
   quality: Quality
   motion: boolean
   role: 'admin' | 'member'
@@ -29,6 +30,8 @@ interface State {
   updateMember: (id: string, patch: Partial<Member>) => void
   removeMember: (id: string) => void
   addEvent: (e: Omit<ClubEvent, 'id' | 'going' | 'attended'>) => void
+  toggleCheckin: (eventId: string, memberId: string) => void
+  rosterApplicant: (id: string) => void
   setQuality: (q: Quality) => void
   setMotion: (v: boolean) => void
   setRole: (r: 'admin' | 'member') => void
@@ -37,7 +40,7 @@ interface State {
 
 const fresh = () => {
   const now = new Date()
-  return { members: buildMembers(now), events: buildEvents(now), applicants: buildApplicants(now), rsvps: [] as string[] }
+  return { members: buildMembers(now), events: buildEvents(now), applicants: buildApplicants(now), rsvps: [] as string[], checkins: {} as Record<string, string[]> }
 }
 
 export const useStore = create<State>()(
@@ -68,6 +71,35 @@ export const useStore = create<State>()(
       updateMember: (id, patch) => set((s) => ({ members: s.members.map((m) => (m.id === id ? { ...m, ...patch } : m)) })),
       removeMember: (id) => set((s) => ({ members: s.members.filter((m) => m.id !== id) })),
       addEvent: (e) => set((s) => ({ events: [...s.events, { ...e, id: `e${Date.now()}`, going: 0, attended: 0 }] })),
+      toggleCheckin: (eventId, memberId) =>
+        set((s) => {
+          const cur = s.checkins[eventId] ?? []
+          const has = cur.includes(memberId)
+          return {
+            checkins: { ...s.checkins, [eventId]: has ? cur.filter((x) => x !== memberId) : [...cur, memberId] },
+            events: s.events.map((e) => (e.id === eventId ? { ...e, attended: Math.max(0, e.attended + (has ? -1 : 1)) } : e)),
+          }
+        }),
+      rosterApplicant: (id) =>
+        set((s) => {
+          const a = s.applicants.find((x) => x.id === id)
+          if (!a || a.rostered) return s
+          const m: Member = {
+            id: `m${Date.now()}`,
+            name: a.name,
+            role: 'New member',
+            team: a.team,
+            branch: a.branch,
+            year: 1,
+            dob: '2007-01-01',
+            skills: [],
+            email: `${a.name.toLowerCase().replace(/[^a-z]+/g, '.')}@iter.example`,
+            joined: isoDay(new Date()),
+            points: 0,
+            attendance: 100,
+          }
+          return { members: [m, ...s.members], applicants: s.applicants.map((x) => (x.id === id ? { ...x, rostered: true } : x)) }
+        }),
       setQuality: (quality) => set({ quality }),
       setMotion: (motion) => set({ motion }),
       setRole: (role) => set({ role }),
@@ -81,6 +113,7 @@ export const useStore = create<State>()(
         events: s.events,
         applicants: s.applicants,
         rsvps: s.rsvps,
+        checkins: s.checkins,
         quality: s.quality,
         motion: s.motion,
         role: s.role,

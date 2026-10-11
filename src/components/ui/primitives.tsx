@@ -1,5 +1,5 @@
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
-import { useEffect, useRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { useEffect, useRef, type ButtonHTMLAttributes, type PointerEvent as RPointerEvent, type ReactNode } from 'react'
 import { Link, type LinkProps } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { google } from '@/config/brand'
@@ -12,14 +12,35 @@ const variants: Record<Variant, string> = {
   soft: 'bg-g-blue-50 text-g-blue-700 hover:bg-[#d2e3fc]',
 }
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-colors duration-150 select-none whitespace-nowrap disabled:opacity-50 disabled:pointer-events-none'
+  'inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-[background-color,border-color,box-shadow,transform,scale] duration-200 select-none whitespace-nowrap hover:shadow-[0_10px_24px_-12px_rgba(32,33,36,.45)] active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none'
+
+/** Buttons lean a few pixels toward a nearby mouse pointer, then spring back. Touch is ignored. */
+function useMagnet<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+  return {
+    ref,
+    onPointerMove: (e: RPointerEvent<T>) => {
+      const el = ref.current
+      if (!el || e.pointerType !== 'mouse') return
+      const b = el.getBoundingClientRect()
+      const dx = e.clientX - (b.left + b.width / 2)
+      const dy = e.clientY - (b.top + b.height / 2)
+      el.style.transform = `translate(${dx * 0.18}px, ${dy * 0.28}px)`
+    },
+    onPointerLeave: () => {
+      if (ref.current) ref.current.style.transform = ''
+    },
+  }
+}
 
 export function Button({ variant = 'blue', className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
-  return <button className={cn(base, variants[variant], className)} {...rest} />
+  const m = useMagnet<HTMLButtonElement>()
+  return <button ref={m.ref} onPointerMove={m.onPointerMove} onPointerLeave={m.onPointerLeave} className={cn(base, variants[variant], className)} {...rest} />
 }
 
 export function ButtonLink({ variant = 'blue', className, ...rest }: LinkProps & { variant?: Variant }) {
-  return <Link className={cn(base, variants[variant], className)} {...rest} />
+  const m = useMagnet<HTMLAnchorElement>()
+  return <Link ref={m.ref} onPointerMove={m.onPointerMove} onPointerLeave={m.onPointerLeave} className={cn(base, variants[variant], className)} {...rest} />
 }
 
 export function Eyebrow({ children, color = google.blue, className }: { children: ReactNode; color?: string; className?: string }) {

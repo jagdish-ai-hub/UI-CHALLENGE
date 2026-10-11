@@ -3,13 +3,20 @@ import { useStore } from '@/store/useStore'
 
 export type Tier = 'high' | 'low' | 'off'
 
+let webglSupport: boolean | null = null
+
+/** Checked once and cached: every probe context would otherwise count toward the browser's WebGL limit. */
 function hasWebGL() {
+  if (webglSupport !== null) return webglSupport
   try {
     const c = document.createElement('canvas')
-    return !!(c.getContext('webgl2') || c.getContext('webgl'))
+    const gl = (c.getContext('webgl2') || c.getContext('webgl')) as WebGLRenderingContext | null
+    webglSupport = !!gl
+    gl?.getExtension('WEBGL_lose_context')?.loseContext()
   } catch {
-    return false
+    webglSupport = false
   }
+  return webglSupport
 }
 
 /** Resolves user preference + device capability to a render tier. */

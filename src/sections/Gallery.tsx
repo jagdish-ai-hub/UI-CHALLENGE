@@ -61,7 +61,7 @@ export default function Gallery() {
     <section id="gallery" className="relative scroll-mt-20 bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <SectionHeading eyebrow="Gallery · memories" color={google.green} line1="Moments we" line2="shipped together.">
-          Drag the stack, or use the arrows. Click the centre card to open it full size.
+          Drag or swipe the stack, or use the arrows. Open the centre card to see it full size.
         </SectionHeading>
 
         <Reveal className="mt-14">

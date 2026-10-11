@@ -42,7 +42,7 @@ export function Lights({ shadows = true, castShadow = false, intensity = 1 }: { 
       />
       <directionalLight position={[-6, 5, -4]} intensity={0.45 * intensity} color="#dbe7ff" />
       {shadows && !castShadow && (
-        <ContactShadows position={[0, 0.001, 0]} opacity={0.22} scale={22} blur={2.6} far={4} resolution={512} frames={Infinity} color="#1f2a44" />
+        <ContactShadows position={[0, 0.001, 0]} opacity={0.22} scale={22} blur={2.6} far={4} resolution={512} frames={90} color="#1f2a44" />
       )}
     </>
   )

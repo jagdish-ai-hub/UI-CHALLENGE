@@ -60,7 +60,7 @@ export default function Meets() {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading eyebrow="Meets · this season" color={google.yellow} line1="Every fortnight." line2="Something to build.">
-            Workshops, talks, study jams and hackathons. Tap a tower to see the plan, RSVP, and drop it in your calendar. Taller towers mean more people are going.
+            Workshops, talks, study jams and hackathons. Pick a tower to see the plan, RSVP, and drop it in your calendar. Taller towers mean more people are going.
           </SectionHeading>
           {next && (
             <Reveal>

@@ -1,4 +1,5 @@
-import { Suspense, type ReactNode } from 'react'
+import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
+import { Canvas } from '@react-three/fiber'
 import { View } from '@react-three/drei'
 import { useTier, type Tier } from '@/lib/useTier'
 import { cn } from '@/lib/utils'
@@ -30,12 +31,48 @@ export function DefaultFallback() {
   )
 }
 
+/**
+ * Phones and tablets: one small canvas per scene, inside the element itself.
+ * It scrolls with the page on the compositor (no judder against a fixed full-screen canvas),
+ * and only exists while the scene is near the viewport, so at most one or two contexts are alive.
+ */
+function LocalScene({ children }: { children: (tier: 'low') => ReactNode }) {
+  const host = useRef<HTMLDivElement>(null)
+  const [near, setNear] = useState(false)
+  useEffect(() => {
+    const el = host.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setNear(!!e?.isIntersecting), { rootMargin: '160px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <div ref={host} className="absolute inset-0">
+      {near && (
+        <Canvas
+          flat
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, alpha: true, powerPreference: 'default' }}
+          style={{ touchAction: 'pan-y' }}
+          onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
+        >
+          <TierContext.Provider value="low">
+            <Suspense fallback={null}>{children('low')}</Suspense>
+          </TierContext.Provider>
+        </Canvas>
+      )}
+    </div>
+  )
+}
+
 export default function SceneFrame({ className, style, label, children, fallback }: Props) {
   const tier = useTier()
   return (
     <div className={cn('relative isolate overflow-hidden', className)} style={style} role="img" aria-label={label}>
       {tier === 'off' ? (
         (fallback ?? <DefaultFallback />)
+      ) : tier === 'low' ? (
+        <LocalScene>{children}</LocalScene>
       ) : (
         <View className="absolute inset-0">
           <TierContext.Provider value={tier}>

@@ -337,7 +337,7 @@ export default function Members() {
                 {() => <MemberNetwork members={list} team={team} hoveredId={hoverId} focusId={focus} onHover={setHoverId} onSelect={openProfile} />}
               </SceneFrame>
               <p className="px-3 pb-2 pt-3 text-sm text-muted">
-                {hoverId ? (() => { const h = members.find((m) => m.id === hoverId); return h ? `${h.name} · ${h.role} · ${teams[h.team].label}` : '' })() : 'Hover a dot to see who it is, click it to open the profile.'}
+                {hoverId ? (() => { const h = members.find((m) => m.id === hoverId); return h ? `${h.name} · ${h.role} · ${teams[h.team].label}` : '' })() : 'Hover or tap a dot to see who it is, then open the profile.'}
               </p>
             </div>
           )}

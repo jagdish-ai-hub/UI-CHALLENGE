@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { SceneFrame } from '@/three/lazy'
 import { Button, CountUp, Eyebrow, Reveal } from '@/components/ui/primitives'
+import { Hint } from '@/components/ui/Hint'
 import { google, teamOrder, teams, type TeamId } from '@/config/brand'
 import { scrollToId } from '@/lib/lenis'
 import { useStore } from '@/store/useStore'
@@ -87,7 +88,7 @@ export default function Hero() {
               </button>
             ))}
           </div>
-          <p className="mt-3 text-xs text-muted">Hover a zone to lift it, click to meet the team.</p>
+          <p className="mt-3 text-xs text-muted"><Hint mouse="Hover a zone to lift it, click to meet the team." touch="Tap a zone to meet the team." /></p>
         </div>
       </div>
     </section>

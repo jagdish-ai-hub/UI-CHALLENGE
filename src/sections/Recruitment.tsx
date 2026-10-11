@@ -2,6 +2,7 @@ import { useState, lazy } from 'react'
 import { Check, ArrowRight } from 'lucide-react'
 import { SceneFrame } from '@/three/lazy'
 import { Button, Reveal, SectionHeading } from '@/components/ui/primitives'
+import { Hint } from '@/components/ui/Hint'
 import { google, teamOrder, teams, type TeamId } from '@/config/brand'
 import { branches, type Branch } from '@/data/seed'
 import { useStore } from '@/store/useStore'
@@ -48,7 +49,7 @@ export default function Recruitment() {
             <SceneFrame label="3D member badge on a lanyard that updates with the name and team you choose" className="h-[480px] rounded-[2rem] transition-colors duration-500 sm:h-[620px]" style={{ background: teams[team].tint }}>
               {() => <BadgeScene name={name} team={team} branch={branch} />}
             </SceneFrame>
-            <p className="mt-3 text-center text-xs text-muted">Move your cursor to swing the badge. Click it to flip.</p>
+            <p className="mt-3 text-center text-xs text-muted"><Hint mouse="Move your cursor to swing the badge. Click it to flip." touch="Drag across the badge to swing it. Tap it to flip." /></p>
           </Reveal>
 
           <Reveal delay={0.08}>

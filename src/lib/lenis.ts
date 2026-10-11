@@ -5,6 +5,7 @@ let instance: Lenis | null = null
 export function startLenis() {
   if (instance) return instance
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return null
   instance = new Lenis({ duration: 1.1, smoothWheel: true })
   const raf = (t: number) => {
     instance?.raf(t)

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { SceneFrame } from '@/three/lazy'
 import { ButtonLink, Reveal, SectionHeading } from '@/components/ui/primitives'
+import { Hint } from '@/components/ui/Hint'
 import { google, teamOrder, teams, type TeamId } from '@/config/brand'
 import { useStore } from '@/store/useStore'
 import { cn, initials } from '@/lib/utils'
@@ -22,7 +23,7 @@ export default function Community() {
     <section id="community" className="relative scroll-mt-20 bg-wash py-24 sm:py-32">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <SectionHeading eyebrow="Community · the network" color={google.blue} line1="Four teams." line2={`${members.length} people.`}>
-          Every dot is a member, colored by team and linked to the people they build with. Hover to meet someone, click to open their profile.
+          Every dot is a member, colored by team and linked to the people they build with. Point at a dot to meet someone and open their profile.
         </SectionHeading>
 
         <div className="mt-14 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
@@ -64,7 +65,7 @@ export default function Community() {
                     </span>
                   </div>
                 ) : (
-                  <p className="py-3 text-xs text-muted">Hover a dot to see who it is. Click it to open their profile.</p>
+                  <p className="py-3 text-xs text-muted"><Hint mouse="Hover a dot to see who it is. Click it to open their profile." touch="Tap a dot to open that member's profile." /></p>
                 )}
               </div>
             </div>

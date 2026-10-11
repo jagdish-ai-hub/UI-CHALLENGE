@@ -1,0 +1,86 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/inter-tight';
+@import '@fontsource-variable/jetbrains-mono';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Inter Tight Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --color-g-blue: #4285f4;
+  --color-g-red: #ea4335;
+  --color-g-yellow: #fbbc04;
+  --color-g-green: #34a853;
+  --color-g-blue-50: #e8f0fe;
+  --color-g-red-50: #fce8e6;
+  --color-g-yellow-50: #fef7e0;
+  --color-g-green-50: #e6f4ea;
+  --color-g-blue-700: #1a73e8;
+  --color-g-green-700: #188038;
+  --color-g-red-700: #c5221f;
+  --color-g-yellow-700: #b06000;
+  --color-ink: #202124;
+  --color-muted: #5f6368;
+  --color-line: #dadce0;
+  --color-paper: #ffffff;
+  --color-wash: #f8f9fa;
+}
+
+html {
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+}
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--color-g-blue-50); color: var(--color-g-blue-700); }
+
+:focus-visible {
+  outline: 3px solid var(--color-g-blue);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  font-weight: 600;
+}
+.display-outline {
+  color: #9aa0a6;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Marker underline: a solid Google-colored highlight behind a word */
+.marker {
+  background-image: linear-gradient(var(--marker, var(--color-g-yellow)), var(--marker, var(--color-g-yellow)));
+  background-repeat: no-repeat;
+  background-size: 100% 0.32em;
+  background-position: 0 92%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -5,6 +5,8 @@ Everything runs on mock data stored in the browser (no backend), with a shared W
 
 Built by Jagdish Pattnaik for the UI Sphere GDG event.
 
+New here? Read [design.md](./design.md) for a beginner-friendly tour of the design and how every homepage animation works.
+
 ## What's inside
 
 | Route | What it does |
